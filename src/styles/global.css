@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  :focus-visible {
+    outline: 2px solid #3D5A40;
+    outline-offset: 3px;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ─── Components ────────────────────────────────────────────── */
+@layer components {
+  .container-wide {
+    @apply max-w-container mx-auto px-4 md:px-6;
+  }
+
+  .section-pt {
+    @apply pt-35;
+  }
+
+  .section-py {
+    @apply py-24 lg:py-32;
+  }
+
+  .eyebrow {
+    @apply block text-xs font-medium tracking-widest uppercase text-stone mb-4;
+  }
+
+  /* Revaya-style headings: bold sans-serif */
+  .heading-xl {
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+
+  .heading-lg {
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .heading-md {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  /* Pill buttons — matches Revaya exactly */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+      rounded-full px-6 h-12 font-medium text-base
+      bg-sage-500 text-white
+      hover:bg-sage-600 transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+      rounded-full px-6 h-12 font-medium text-base
+      border border-charcoal text-charcoal
+      hover:bg-charcoal hover:text-white transition-colors duration-200;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center justify-center gap-2
+      rounded-full px-8 h-12 font-medium text-base
+      border border-white/40 bg-white/10 text-white
+      backdrop-blur-sm hover:bg-white/20 transition-colors duration-200;
+  }
+
+  .btn-outline-sage {
+    @apply inline-flex items-center justify-center gap-2
+      rounded-full px-6 h-12 font-medium text-base
+      border border-sage-500 text-sage-500
+      hover:bg-sage-500 hover:text-white transition-colors duration-200;
+  }
+
+  /* Service card — full-image overlay (matches Revaya) */
+  .service-card {
+    @apply group relative flex flex-col justify-end overflow-hidden rounded-xl;
+    height: 25rem;
+  }
+}
+
+/* ─── Scroll fade-up ────────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+.fade-up-delay-4 { transition-delay: 0.4s; }
+.fade-up-delay-5 { transition-delay: 0.5s; }
+
+/* ─── Header scroll ─────────────────────────────────────────── */
+#site-header {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+#site-header.header-scrolled {
+  background-color: #FAFAF8;
+  box-shadow: 0 1px 12px rgba(17,19,17,0.08);
+}
+#site-header .header-text        { color: #ffffff; }
+#site-header.header-scrolled .header-text { color: #111311; }
+
+#site-header .header-cta {
+  border: 1px solid rgba(255,255,255,0.7);
+  color: #ffffff;
+  border-radius: 9999px;
+}
+#site-header .header-cta:hover    { background-color: #ffffff; color: #111311; }
+#site-header.header-scrolled .header-cta { border-color: #3D5A40; color: #3D5A40; }
+#site-header.header-scrolled .header-cta:hover { background-color: #3D5A40; color: #ffffff; }
+
+/* ─── FAQ accordion ─────────────────────────────────────────── */
+details summary      { list-style: none; cursor: pointer; user-select: none; }
+details summary::-webkit-details-marker { display: none; }
+.summary-icon        { transition: transform 0.25s ease; flex-shrink: 0; }
+details[open] .summary-icon { transform: rotate(45deg); }
+
+/* ─── Sticky CTA pulse ──────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(61,90,64,0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(61,90,64,0); }
+  100% { box-shadow: 0 0 0 0 rgba(61,90,64,0); }
+}
+.pulse-btn { animation: pulse-ring 2.8s ease infinite; }

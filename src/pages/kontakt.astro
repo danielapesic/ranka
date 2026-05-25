@@ -1,0 +1,145 @@
+---
+// Contact page — info cards, Google Map, hours, and CTA banner
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Hours from '../components/Hours.astro'
+import CtaBanner from '../components/CtaBanner.astro'
+import StickyCallButton from '../components/StickyCallButton.astro'
+---
+<Layout
+  title="Kontakt — Salon Ranka"
+  description="Kontaktirajte Salon Ranka. Adresa: Miramarska cesta 24, Zagreb. Telefon: +385 1 6110 777. Pogledajte radno vrijeme i pronađite nas na karti."
+>
+  <Header />
+
+  <main id="main-content">
+
+    <!-- Page hero -->
+    <section class="pt-40 pb-20 bg-cream" aria-labelledby="contact-heading">
+      <div class="container-wide text-center">
+        <div class="max-w-xl mx-auto fade-up">
+          <span class="eyebrow">Dođite nas posjetiti</span>
+          <h1 id="contact-heading" class="heading-lg mb-5">Kontaktirajte nas</h1>
+          <p class="text-stone leading-relaxed">
+            Rado ćemo vam pomoći pronaći termin koji vam odgovara.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info + Map -->
+    <section class="section-py bg-cream-dark" aria-label="Kontakt informacije i karta">
+      <div class="container-wide">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+          <!-- Info cards -->
+          <div class="space-y-4 fade-up">
+
+            <!-- Address -->
+            <div class="rounded-xl border border-pebble bg-white p-6 flex items-start gap-5">
+              <div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-sage-50 text-sage-500">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-xs tracking-widest uppercase text-stone mb-1.5">Adresa</h2>
+                <address class="not-italic text-base font-medium text-charcoal leading-snug">
+                  Miramarska cesta 24<br />10000 Zagreb, Hrvatska
+                </address>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="rounded-xl border border-pebble bg-white p-6 flex items-start gap-5">
+              <div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-sage-50 text-sage-500">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-5.99-5.99 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-xs tracking-widest uppercase text-stone mb-1.5">Telefon</h2>
+                <a
+                  href="tel:+38516110777"
+                  class="text-xl font-semibold text-sage-500 hover:text-sage-600 transition-colors duration-200"
+                  aria-label="Pozovite: +385 1 6110 777"
+                >
+                  +385 1 6110 777
+                </a>
+                <p class="text-xs text-stone mt-1">Nazovite za dogovor termina</p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="rounded-xl border border-pebble bg-white p-6 flex items-start gap-5">
+              <div class="shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-sage-50 text-sage-500">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-xs tracking-widest uppercase text-stone mb-1.5">E-mail</h2>
+                <a
+                  href="mailto:info@salonranka.hr"
+                  class="text-base font-medium text-charcoal hover:text-sage-500 transition-colors duration-200"
+                >
+                  info@salonranka.hr
+                </a>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="pt-1">
+              <a href="tel:+38516110777" class="btn-primary w-full sm:w-auto">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-5.99-5.99 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                Nazovite za termin
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Google Map -->
+          <div class="fade-up fade-up-delay-1">
+            <div class="overflow-hidden" style="height: 480px;">
+              <iframe
+                title="Lokacija Salon Ranka — Miramarska cesta 24, Zagreb"
+                src="https://maps.google.com/maps?q=Miramarska+cesta+24,+10000+Zagreb,+Croatia&output=embed&z=16"
+                width="100%"
+                height="100%"
+                style="border:0;"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                aria-label="Interaktivna karta s lokacijom Salon Ranka"
+              ></iframe>
+            </div>
+            <p class="text-xs text-stone mt-3 text-center">
+              Miramarska cesta 24, 10000 Zagreb
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Hours -->
+    <Hours />
+
+    <!-- CTA banner -->
+    <CtaBanner
+      headline="Pronađite termin koji vam odgovara"
+      subhead="Nazovite nas i dogovorite tretman u skladu s vašim rasporedom i potrebama."
+      ctaLabel="Nazovite +385 1 6110 777"
+    />
+
+  </main>
+
+  <Footer />
+  <StickyCallButton />
+</Layout>
+

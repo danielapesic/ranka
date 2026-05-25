@@ -1,0 +1,68 @@
+---
+// Testimonials — 3 cards side-by-side, small avatar, quote, name
+const reviews = [
+  {
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&q=80',
+    name: 'Ana K.',
+    quote: 'Najbolja masaža u Zagrebu. Osoblje je profesionalno i ljubazno, a salon ima posebnu atmosferu. Odlazim potpuno opuštena.',
+  },
+  {
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=96&q=80',
+    name: 'Marija P.',
+    quote: 'Dugo sam tražila salon gdje se uistinu osjeća briga za klijenta. Salon Ranka je to mjesto. Toplo preporučujem.',
+  },
+  {
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&q=80',
+    name: 'Ivan M.',
+    quote: 'Sportska masaža mi je spasila leđa nakon dugih sati za računalom. Vraćam se redovito i uvijek odlazim obnovljen.',
+  },
+]
+---
+<section class="section-pt pb-24 lg:pb-32" aria-labelledby="testimonials-heading">
+  <div class="container-wide">
+
+    <div class="mb-10 fade-up">
+      <p class="eyebrow">Iskustva klijenata</p>
+      <h2 id="testimonials-heading" class="heading-lg">
+        Što kažu naši klijenti
+      </h2>
+    </div>
+
+    <!-- 3 cards side by side -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {reviews.map((r, i) => (
+        <figure
+          class={`rounded-xl border border-pebble bg-white p-6 flex flex-col gap-4 fade-up fade-up-delay-${i + 1}`}
+          aria-label={`Recenzija od ${r.name}`}
+        >
+          <!-- Stars -->
+          <div class="text-yellow-500 text-base" aria-label="Ocjena: 5 od 5 zvjezdica" role="img">
+            ★★★★★
+          </div>
+
+          <!-- Quote -->
+          <blockquote class="flex-1">
+            <p class="text-stone leading-relaxed text-sm">
+              &ldquo;{r.quote}&rdquo;
+            </p>
+          </blockquote>
+
+          <!-- Author row with small avatar -->
+          <figcaption class="flex items-center gap-3 pt-4 border-t border-pebble">
+            <img
+              src={r.avatar}
+              alt={`Fotografija klijenta: ${r.name}`}
+              class="w-10 h-10 rounded-full object-cover shrink-0"
+              loading="lazy"
+            />
+            <div>
+              <span class="block text-sm font-semibold text-charcoal">{r.name}</span>
+              <span class="block text-xs text-stone">Klijent salona</span>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+  </div>
+</section>

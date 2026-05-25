@@ -1,0 +1,82 @@
+---
+// Services — full-image overlay cards h-100 (matches Revaya exactly)
+const services = [
+  {
+    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80',
+    alt: 'Klasična masaža u Salon Ranka',
+    category: 'Masaža',
+    title: 'Klasična masaža',
+    description: 'Tradicionalna tehnika za opuštanje cijelog tijela i ublažavanje nakupljene napetosti.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
+    alt: 'Sportska masaža za regeneraciju',
+    category: 'Masaža',
+    title: 'Sportska masaža',
+    description: 'Intenzivna masaža za sportaše i aktivne — priprema, regeneracija i prevencija ozljeda.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80',
+    alt: 'Medicinska masaža za ublažavanje boli',
+    category: 'Terapija',
+    title: 'Medicinska masaža',
+    description: 'Ciljana terapija za bolove u leđima, vratu i ramenima s dugotrajnim učinkom.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    alt: 'Relaks masaža s aromatičnim uljima',
+    category: 'Opuštanje',
+    title: 'Relaks masaža',
+    description: 'Nježne tehnike s aromatičnim uljima za potpuno opuštanje tijela i uma.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80',
+    alt: 'Anticelulitna masaža za oblikovanje tijela',
+    category: 'Tijelo',
+    title: 'Anticelulitna masaža',
+    description: 'Tretman za oblikovanje tijela, poboljšanje cirkulacije i vidljivo glatkiju kožu.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=800&q=80',
+    alt: 'Masaža stopala i refleksologija',
+    category: 'Refleksologija',
+    title: 'Masaža stopala',
+    description: 'Refleksologija stopala koja blagotvorno djeluje na cijelo tijelo i vraća ravnotežu.',
+  },
+]
+---
+<section id="usluge" class="section-pt" aria-labelledby="services-heading">
+  <div class="container-wide text-center">
+    <h2 id="services-heading" class="heading-lg mb-2">Naše usluge</h2>
+    <p class="mx-auto mb-12 max-w-xl text-sm text-stone md:text-base">
+      Naši iskusni terapeuti pružaju tretmane prilagođene vašim individualnim potrebama.
+    </p>
+
+    <!-- Full-image overlay card grid (matches Revaya exactly) -->
+    <div class="grid gap-6 md:grid-cols-3">
+      {services.map((s) => (
+        <article
+          class="group relative flex h-100 flex-col justify-end overflow-hidden rounded-xl"
+          aria-label={s.title}
+        >
+          <!-- Full-bleed background image -->
+          <img
+            src={s.image}
+            alt={s.alt}
+            class="absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+          <!-- Dark overlay, darkens on hover -->
+          <div class="absolute inset-0 bg-black/40 transition-all group-hover:bg-black/50" aria-hidden="true"></div>
+
+          <!-- Text content at bottom -->
+          <div class="relative z-10 p-6 text-left text-white">
+            <p class="mb-1 text-xs tracking-wider uppercase opacity-80">{s.category}</p>
+            <h3 class="mb-2 text-xl font-semibold md:text-2xl">{s.title}</h3>
+            <p class="text-sm leading-snug opacity-90">{s.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,84 @@
+---
+// Opening hours table — highlights today's row via inline script
+const schedule = [
+  { day: 'Ponedjeljak', jsDay: 1, hours: '12:00 – 20:00', open: true },
+  { day: 'Utorak',      jsDay: 2, hours: '08:00 – 16:00', open: true },
+  { day: 'Srijeda',     jsDay: 3, hours: '12:00 – 20:00', open: true },
+  { day: 'Četvrtak',    jsDay: 4, hours: '08:00 – 16:00', open: true },
+  { day: 'Petak',       jsDay: 5, hours: '12:00 – 20:00', open: true },
+  { day: 'Subota',      jsDay: 6, hours: 'Zatvoreno',     open: false },
+  { day: 'Nedjelja',    jsDay: 0, hours: 'Zatvoreno',     open: false },
+]
+---
+<section id="radno-vrijeme" class="section-py bg-cream-dark" aria-labelledby="hours-heading">
+  <div class="container-wide">
+    <div class="max-w-2xl mx-auto">
+
+      <!-- Header -->
+      <div class="text-center mb-12 fade-up">
+        <span class="eyebrow">Kada nas možete posjetiti</span>
+        <h2 id="hours-heading" class="heading-lg">Radno vrijeme</h2>
+      </div>
+
+      <!-- Table -->
+      <div class="rounded-xl border border-pebble bg-white fade-up overflow-hidden" role="region" aria-label="Radno vrijeme salona">
+        <table class="w-full" aria-label="Tjedni raspored rada Salon Ranka">
+          <caption class="sr-only">Radno vrijeme Salon Ranka po danima u tjednu</caption>
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">Dan</th>
+              <th scope="col">Radno vrijeme</th>
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.map((row) => (
+              <tr
+                data-day={row.jsDay}
+                class="hours-row border-b border-pebble last:border-0 transition-colors duration-200"
+              >
+                <td class="py-4 px-6 lg:px-8">
+                  <span class="font-sans text-sm font-medium text-charcoal">{row.day}</span>
+                </td>
+                <td class="py-4 px-6 lg:px-8 text-right">
+                  <span class={`text-sm font-sans ${row.open ? 'text-charcoal' : 'text-stone'}`}>
+                    {row.hours}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Note -->
+      <p class="text-xs text-stone text-center mt-5 fade-up">
+        Molimo nazovite <a href="tel:+38516110777" class="text-sage-500 hover:underline">+385 1 6110 777</a> za dogovor termina.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var today = new Date().getDay()
+    var rows = document.querySelectorAll('.hours-row')
+    rows.forEach(function (row) {
+      if (parseInt(row.getAttribute('data-day'), 10) === today) {
+        row.classList.add('bg-sage-50')
+        var cells = row.querySelectorAll('td span')
+        cells.forEach(function (cell) {
+          cell.classList.add('font-semibold', 'text-sage-600')
+          cell.classList.remove('text-stone', 'text-charcoal')
+        })
+        // Add "Danas" label
+        var dayCell = row.querySelector('td:first-child')
+        if (dayCell) {
+          var badge = document.createElement('span')
+          badge.textContent = 'Danas'
+          badge.className = 'ml-2 text-[0.6rem] tracking-[0.1em] uppercase bg-sage-500 text-white px-2 py-0.5'
+          dayCell.querySelector('span').appendChild(badge)
+        }
+      }
+    })
+  })()
+</script>

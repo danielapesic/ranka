@@ -1,0 +1,51 @@
+---
+// Hero — full-viewport, text left-aligned on desktop (matches Revaya structure exactly)
+---
+<section
+  id="pocetna"
+  class="relative z-10 min-h-screen pt-45 pb-10"
+  aria-label="Uvodni odjeljak"
+>
+  <!-- Background image -->
+  <div class="absolute inset-0 z-[-2]">
+    <img
+      src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1920&q=85"
+      alt="Relaksacijska masaža u Salon Ranka"
+      class="h-full w-full object-cover object-center"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <!-- Mobile: gradient top-to-bottom; Desktop: left-to-right fading right -->
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/70 md:bg-gradient-to-r md:from-black/90 md:via-black/30 md:to-transparent"
+      aria-hidden="true"
+    ></div>
+  </div>
+
+  <!-- Content — left-aligned (Revaya pattern) -->
+  <div class="container-wide px-6 text-white">
+    <div class="mr-auto max-w-2xl">
+      <p class="eyebrow text-white/70 mb-6 fade-up">
+        Salon Ranka — Zagreb
+      </p>
+
+      <h1 class="heading-xl text-white mb-6 fade-up fade-up-delay-1">
+        Obnovite ravnotežu.<br />
+        <span class="text-sage-200">Vratite</span> energiju.
+      </h1>
+
+      <p class="mt-6 mr-auto max-w-xl text-lg text-white fade-up fade-up-delay-2">
+        Pobjegnite od svakodnevne užurbanosti i prepustite se mirnom utočištu u srcu Zagreba — gdje vas čekaju opuštajući tretmani i iskusni terapeuti.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-4 fade-up fade-up-delay-3">
+        <a href="#usluge" class="btn-primary w-full sm:w-fit">
+          Naše usluge
+        </a>
+        <a href="/kontakt" class="btn-outline-white w-full sm:w-fit">
+          Kontakt
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

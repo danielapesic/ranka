@@ -1,0 +1,233 @@
+---
+// Header — transparent, pill-style active nav with scroll-spy
+const currentPath = Astro.url.pathname
+const isContactPage = currentPath.startsWith('/kontakt')
+---
+<header id="site-header" class={`fixed top-0 left-0 z-50 flex w-full${isContactPage ? ' header-scrolled' : ''}`}>
+  <div class="container-wide mt-2 flex w-full items-center justify-between py-4">
+
+    <!-- Logo -->
+    <div class="z-10">
+      <a
+        href="/"
+        class="header-text flex items-center gap-2 font-semibold text-xl tracking-wide"
+        aria-label="Salon Ranka — početna stranica"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+        Salon Ranka
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <div class="z-[600] inline-block md:hidden">
+      <button
+        id="menu-toggle"
+        class="header-text"
+        aria-label="Otvori izbornik"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>
+        </svg>
+        <svg id="menu-icon-close" class="hidden size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile nav panel -->
+    <nav
+      id="mobile-nav"
+      class="fixed top-0 left-0 z-50 h-screen w-full bg-white/30 backdrop-blur-xl transition-transform duration-300 md:hidden translate-x-full"
+      aria-label="Mobilna navigacija"
+    >
+      <ul class="border-pebble ml-auto flex h-full w-[70%] flex-col gap-6 border-l bg-white px-6 pt-20" role="list">
+        <li><a href="/" data-mobile-nav="pocetna" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Početna</a></li>
+        <li><a href="/#usluge" data-mobile-nav="usluge" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Usluge</a></li>
+        <li><a href="/#galerija" data-mobile-nav="galerija" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Galerija</a></li>
+        <li><a href="/kontakt" data-mobile-nav="kontakt" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Kontakt</a></li>
+        <a href="tel:+38516110777" class="btn-primary w-fit">Nazovite za termin</a>
+      </ul>
+    </nav>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:block" aria-label="Glavna navigacija">
+      <ul class="flex gap-10 capitalize" role="list">
+        <li>
+          <a
+            href="/"
+            data-nav="pocetna"
+            class="nav-link text-[1rem] font-medium transition-colors duration-300"
+          >Početna</a>
+        </li>
+        <li>
+          <a
+            href="/#usluge"
+            data-nav="usluge"
+            class="nav-link text-[1rem] font-medium transition-colors duration-300"
+          >Usluge</a>
+        </li>
+        <li>
+          <a
+            href="/#galerija"
+            data-nav="galerija"
+            class="nav-link text-[1rem] font-medium transition-colors duration-300"
+          >Galerija</a>
+        </li>
+        <li>
+          <a
+            href="/kontakt"
+            data-nav="kontakt"
+            class="nav-link text-[1rem] font-medium transition-colors duration-300"
+          >Kontakt</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Desktop CTA -->
+    <a
+      href="tel:+38516110777"
+      class="header-cta hidden md:flex items-center gap-2 px-6 py-2.5 text-sm font-medium transition-colors duration-200"
+      aria-label="Nazovite za termin: +385 1 6110 777"
+    >
+      Nazovite za termin
+    </a>
+
+  </div>
+</header>
+
+<style>
+  /*
+    All nav links always have the same padding + border-radius so layout
+    never shifts when the active state changes — only the background colour
+    and text colour animate.
+  */
+  #site-header .nav-link {
+    padding: 0.5rem 0.75rem;
+    border-radius: 9999px;
+    color: #ffffff;
+    background-color: transparent;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  #site-header.header-scrolled .nav-link { color: #111311; }
+
+  #site-header .nav-link:hover              { color: rgba(255,255,255,0.75); }
+  #site-header.header-scrolled .nav-link:hover { color: #3D5A40; }
+
+  /* Active: just swap background — size stays identical */
+  #site-header .nav-link.nav-active {
+    background-color: #3D5A40;
+    color: #ffffff !important;
+  }
+  #site-header .nav-link.nav-active:hover { color: #ffffff !important; }
+</style>
+
+<script is:inline define:vars={{ isContactPage }}>
+  (function () {
+    var header     = document.getElementById('site-header')
+    var toggle     = document.getElementById('menu-toggle')
+    var mobileNav  = document.getElementById('mobile-nav')
+    var iconOpen   = document.getElementById('menu-icon-open')
+    var iconClose  = document.getElementById('menu-icon-close')
+
+    // ── Mobile menu ──────────────────────────────────────────
+    toggle && toggle.addEventListener('click', function () {
+      var open = mobileNav.classList.contains('translate-x-0')
+      mobileNav.classList.toggle('translate-x-0', !open)
+      mobileNav.classList.toggle('translate-x-full', open)
+      iconOpen.classList.toggle('hidden', !open)
+      iconClose.classList.toggle('hidden', open)
+      toggle.setAttribute('aria-expanded', String(!open))
+    })
+    mobileNav && mobileNav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        mobileNav.classList.remove('translate-x-0')
+        mobileNav.classList.add('translate-x-full')
+        iconOpen.classList.remove('hidden')
+        iconClose.classList.add('hidden')
+        toggle.setAttribute('aria-expanded', 'false')
+      })
+    })
+
+    // ── Header scroll state ───────────────────────────────────
+    // Contact page has no hero — keep solid header always, never toggle it
+    if (!isContactPage) {
+      function updateHeader () {
+        header.classList.toggle('header-scrolled', window.scrollY > 72)
+      }
+      updateHeader()
+      window.addEventListener('scroll', updateHeader, { passive: true })
+    }
+
+    // ── Scroll-spy ────────────────────────────────────────────
+    var navLinks = document.querySelectorAll('[data-nav]')
+
+    function setActive (sectionId) {
+      navLinks.forEach(function (link) {
+        var active = link.dataset.nav === sectionId
+        link.classList.toggle('nav-active', active)
+        link.setAttribute('aria-current', active ? 'true' : 'false')
+      })
+    }
+
+    // On contact page, only "kontakt" is ever active
+    if (isContactPage) {
+      setActive('kontakt')
+      return
+    }
+
+    // Sections to watch, in DOM order
+    var sectionIds = ['pocetna', 'usluge', 'galerija']
+
+    function getActiveSection () {
+      var threshold = 120  // header height + small buffer
+      var active = sectionIds[0]
+      sectionIds.forEach(function (id) {
+        var el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= threshold) {
+          active = id
+        }
+      })
+      return active
+    }
+
+    // Lock scroll-spy for ~900 ms after a click so the highlight
+    // doesn't flicker back to the old section while smooth-scroll runs.
+    var clickLocked = false
+    var clickLockTimer = null
+
+    var rafPending = false
+    function onScroll () {
+      if (clickLocked) return   // <-- ignore scroll events during click-scroll
+      if (rafPending) return
+      rafPending = true
+      requestAnimationFrame(function () {
+        setActive(getActiveSection())
+        rafPending = false
+      })
+    }
+
+    // Initialise on load
+    setActive(getActiveSection())
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    // On click: highlight immediately, then lock scroll-spy briefly
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        var id = link.dataset.nav
+        if (id === 'kontakt') return
+        setActive(id)
+        clickLocked = true
+        clearTimeout(clickLockTimer)
+        clickLockTimer = setTimeout(function () {
+          clickLocked = false
+        }, 900)
+      })
+    })
+  })()
+</script>

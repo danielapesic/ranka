@@ -1,0 +1,119 @@
+---
+// Base layout — handles SEO, fonts, JSON-LD, and scroll animations
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  ogImage?: string
+  isHomepage?: boolean
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.jpg',
+  isHomepage = false,
+} = Astro.props
+
+const siteUrl = 'https://salonranka.hr'
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).href
+
+const jsonLd = isHomepage
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: 'Salon Ranka',
+      description: 'Profesionalna masaža i wellness tretmani u centru Zagreba.',
+      url: siteUrl,
+      telephone: '+38516110777',
+      email: 'info@salonranka.hr',
+      image: `${siteUrl}/og-image.jpg`,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Miramarska cesta 24',
+        addressLocality: 'Zagreb',
+        postalCode: '10000',
+        addressCountry: 'HR',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 45.7937,
+        longitude: 15.9783,
+      },
+      openingHoursSpecification: [
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '12:00', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '08:00', closes: '16:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '12:00', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '08:00', closes: '16:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '12:00', closes: '20:00' },
+      ],
+      priceRange: '$$',
+    })
+  : null
+---
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Google Fonts: Bricolage Grotesque (matches Revaya) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Primary SEO -->
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="hr_HR" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content="Salon Ranka" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- JSON-LD structured data (homepage only) -->
+  {isHomepage && <script type="application/ld+json" set:html={jsonLd} />}
+</head>
+<body>
+  <slot />
+
+  <!-- Global scroll fade-in observer -->
+  <script is:inline>
+    (function () {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      )
+      document.querySelectorAll('.fade-up').forEach(function (el) {
+        observer.observe(el)
+      })
+    })()
+  </script>
+</body>
+</html>
