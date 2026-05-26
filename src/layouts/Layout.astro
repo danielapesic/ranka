@@ -1,6 +1,7 @@
 ---
 // Base layout — handles SEO, fonts, JSON-LD, and scroll animations
 import '../styles/global.css'
+import { reviews, ratingStats } from '../data/reviews.ts'
 
 interface Props {
   title: string
@@ -22,7 +23,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl).href
 const jsonLd = isHomepage
   ? JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
+      '@type': 'HealthAndBeautyBusiness',
       name: 'Salon Ranka',
       description: 'Profesionalna masaža i wellness tretmani u centru Zagreba.',
       url: siteUrl,
@@ -42,12 +43,31 @@ const jsonLd = isHomepage
         longitude: 15.9783,
       },
       openingHoursSpecification: [
-        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '12:00', closes: '20:00' },
-        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '08:00', closes: '16:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday',    opens: '12:00', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday',   opens: '08:00', closes: '16:00' },
         { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '12:00', closes: '20:00' },
-        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '08:00', closes: '16:00' },
-        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '12:00', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday',  opens: '08:00', closes: '16:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday',    opens: '12:00', closes: '20:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday',  opens: '08:00', closes: '13:00' },
       ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: ratingStats.ratingValue,
+        reviewCount: ratingStats.reviewCount,
+        bestRating: ratingStats.bestRating,
+        worstRating: ratingStats.worstRating,
+      },
+      review: reviews.map(r => ({
+        '@type': 'Review',
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: r.rating,
+          bestRating: 5,
+        },
+        author: { '@type': 'Person', name: r.author },
+        datePublished: r.date,
+        reviewBody: r.text,
+      })),
       priceRange: '$$',
     })
   : null

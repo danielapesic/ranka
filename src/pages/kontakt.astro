@@ -15,12 +15,12 @@ import StickyCallButton from '../components/StickyCallButton.astro'
 
   <main id="main-content">
 
-    <!-- Page hero -->
-    <section class="pt-40 pb-20 bg-cream" aria-labelledby="contact-heading">
+    <!-- Page heading -->
+    <section class="pt-36 pb-10 bg-cream" aria-labelledby="contact-heading">
       <div class="container-wide text-center">
         <div class="max-w-xl mx-auto fade-up">
           <span class="eyebrow">Dođite nas posjetiti</span>
-          <h1 id="contact-heading" class="heading-lg mb-5">Kontaktirajte nas</h1>
+          <h1 id="contact-heading" class="heading-lg mb-4">Kontaktirajte nas</h1>
           <p class="text-stone leading-relaxed">
             Rado ćemo vam pomoći pronaći termin koji vam odgovara.
           </p>
@@ -29,9 +29,9 @@ import StickyCallButton from '../components/StickyCallButton.astro'
     </section>
 
     <!-- Info + Map -->
-    <section class="section-py bg-cream-dark" aria-label="Kontakt informacije i karta">
+    <section class="py-12 lg:py-16 bg-cream" aria-label="Kontakt informacije i karta">
       <div class="container-wide">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
           <!-- Info cards -->
           <div class="space-y-4 fade-up">
@@ -105,12 +105,43 @@ import StickyCallButton from '../components/StickyCallButton.astro'
 
           <!-- Google Map -->
           <div class="fade-up fade-up-delay-1">
-            <div class="overflow-hidden" style="height: 480px;">
+            <!-- Wrapper: placeholder sits underneath, iframe renders on top -->
+            <div class="relative rounded-xl border border-pebble overflow-hidden" style="height: 440px;">
+
+              <!-- Skeleton placeholder — hidden via JS once iframe fires load -->
+              <div id="map-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-sage-50">
+                <!-- Subtle dot-grid background -->
+                <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                      <circle cx="2" cy="2" r="1.5" fill="#3D5A40"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#dots)"/>
+                </svg>
+                <!-- Pin icon -->
+                <div class="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-md text-sage-500">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="relative z-10 text-center">
+                  <p class="text-sm font-medium text-charcoal">Miramarska cesta 24</p>
+                  <p class="text-xs text-stone mt-0.5">10000 Zagreb</p>
+                </div>
+                <!-- Shimmer bar -->
+                <div class="relative z-10 h-1.5 w-24 rounded-full bg-sage-200 overflow-hidden">
+                  <div class="absolute inset-y-0 left-0 w-1/2 bg-sage-400 rounded-full map-shimmer"></div>
+                </div>
+              </div>
+
+              <!-- Iframe — hides the placeholder via JS on load -->
               <iframe
+                id="map-iframe"
                 title="Lokacija Salon Ranka — Miramarska cesta 24, Zagreb"
                 src="https://maps.google.com/maps?q=Miramarska+cesta+24,+10000+Zagreb,+Croatia&output=embed&z=16"
-                width="100%"
-                height="100%"
+                class="absolute inset-0 w-full h-full"
                 style="border:0;"
                 allowfullscreen
                 loading="lazy"
@@ -118,7 +149,7 @@ import StickyCallButton from '../components/StickyCallButton.astro'
                 aria-label="Interaktivna karta s lokacijom Salon Ranka"
               ></iframe>
             </div>
-            <p class="text-xs text-stone mt-3 text-center">
+            <p class="text-xs text-stone mt-2.5 text-center">
               Miramarska cesta 24, 10000 Zagreb
             </p>
           </div>
@@ -135,6 +166,7 @@ import StickyCallButton from '../components/StickyCallButton.astro'
       headline="Pronađite termin koji vam odgovara"
       subhead="Nazovite nas i dogovorite tretman u skladu s vašim rasporedom i potrebama."
       ctaLabel="Nazovite +385 1 6110 777"
+      mt="mt-10"
     />
 
   </main>
@@ -143,3 +175,22 @@ import StickyCallButton from '../components/StickyCallButton.astro'
   <StickyCallButton />
 </Layout>
 
+<style>
+  @keyframes shimmer-slide {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+  }
+  .map-shimmer {
+    animation: shimmer-slide 1.6s ease-in-out infinite;
+  }
+</style>
+
+<script is:inline>
+  var iframe = document.getElementById('map-iframe')
+  var placeholder = document.getElementById('map-placeholder')
+  if (iframe && placeholder) {
+    iframe.addEventListener('load', function () {
+      placeholder.style.display = 'none'
+    })
+  }
+</script>

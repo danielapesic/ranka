@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import CtaBanner from '../components/CtaBanner.astro'
+import StickyCallButton from '../components/StickyCallButton.astro'
+
+const categories = [
+  {
+    id: 'masaza',
+    title: 'Masaža',
+    items: [
+      { name: 'Masaža za žene',               duration: '60 min', price: '50 €' },
+      { name: 'Masaža za muškarce',            duration: '60 min', price: '55 €' },
+      { name: 'Parcijalna masaža',             duration: '30 min', price: '35 €' },
+      { name: 'Parcijalna masaža produžena',   duration: '40 min', price: '40 €' },
+      { name: 'Medicinska masaža',             duration: null,     price: '55 €' },
+      { name: 'Medicinska masaža parcijalna',  duration: null,     price: '35 €' },
+      { name: 'Masaža antistress therapy',     duration: null,     price: '70 €' },
+      { name: 'Cupping',                       duration: null,     price: '15 €' },
+      { name: 'Cupping masaža',                duration: '20 min', price: '30 €' },
+    ],
+  },
+  {
+    id: 'kozmetika',
+    title: 'Kozmetika',
+    items: [
+      { name: 'Kozmetika lica', duration: null, price: '50 €' },
+      { name: 'Kozmetika leđa', duration: null, price: '35 €' },
+    ],
+  },
+  {
+    id: 'depilacija',
+    title: 'Depilacija voskom (hladnim)',
+    items: [
+      { name: 'Cijele noge',              duration: null, price: '20 €' },
+      { name: 'Pola nogu',                duration: null, price: '15 €' },
+      { name: 'Bikini zona',              duration: null, price: '15 €' },
+      { name: 'Noge i bikini zona',       duration: null, price: '30 €' },
+      { name: 'Pola nogu i bikini zona',  duration: null, price: '25 €' },
+      { name: 'Ruke',                     duration: null, price: '10 €' },
+      { name: 'Pazusi',                   duration: null, price: '6 €'  },
+      { name: 'Nadusnica',                duration: null, price: '5 €'  },
+      { name: 'Lice',                     duration: null, price: '10 €' },
+      { name: 'Muška prsa / trbuh / leđa', duration: null, price: '15 €' },
+    ],
+  },
+  {
+    id: 'obrve',
+    title: 'Obrve i trepavice',
+    items: [
+      { name: 'Bojenje obrva i trepavica', duration: null, price: '15 €' },
+      { name: 'Bojenje obrva i korekcija', duration: null, price: '10 €' },
+      { name: 'Korekcija obrva',           duration: null, price: '5 €'  },
+    ],
+  },
+]
+---
+<Layout
+  title="Cjenik — Salon Ranka"
+  description="Cjenik usluga Salon Ranka Zagreb. Masaže, kozmetika, depilacija voskom i oblikovanje obrva. Miramarska cesta 24, tel. +385 1 6110 777."
+>
+  <Header />
+
+  <main id="main-content">
+
+    <!-- Page heading -->
+    <section class="pt-40 pb-16 bg-cream" aria-labelledby="cjenik-heading">
+      <div class="container-wide text-center">
+        <div class="max-w-xl mx-auto fade-up">
+          <span class="eyebrow">Salon Ranka</span>
+          <h1 id="cjenik-heading" class="heading-lg mb-4">Cjenik usluga</h1>
+          <p class="text-stone leading-relaxed">
+            Sve cijene su izražene u eurima i uključuju PDV. Za dogovor termina nazovite <a href="tel:+38516110777" class="text-sage-500 hover:underline">+385 1 6110 777</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing sections -->
+    <section class="pb-10 bg-cream" aria-label="Cjenik po kategorijama">
+      <div class="container-wide">
+        <div class="max-w-2xl mx-auto space-y-6">
+
+          {categories.map((cat, ci) => (
+            <div
+              id={cat.id}
+              class={`rounded-xl border border-pebble bg-white overflow-hidden fade-up fade-up-delay-${Math.min(ci + 1, 4)}`}
+            >
+              <!-- Category header -->
+              <div class="px-6 py-4 border-b border-pebble bg-sage-50">
+                <h2 class="text-sm font-semibold tracking-widest uppercase text-sage-600">
+                  {cat.title}
+                </h2>
+              </div>
+
+              <!-- Rows -->
+              <table class="w-full" aria-label={`Cijene za ${cat.title}`}>
+                <caption class="sr-only">Cjenik — {cat.title}</caption>
+                <thead class="sr-only">
+                  <tr>
+                    <th scope="col">Usluga</th>
+                    <th scope="col">Trajanje</th>
+                    <th scope="col">Cijena</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cat.items.map((item, i) => (
+                    <tr class={`border-b border-pebble last:border-0 ${i % 2 === 0 ? '' : 'bg-cream/60'}`}>
+                      <td class="py-3.5 px-6 text-sm text-charcoal font-medium">{item.name}</td>
+                      <td class="py-3.5 px-4 text-sm text-stone text-center whitespace-nowrap">
+                        {item.duration ?? ''}
+                      </td>
+                      <td class="py-3.5 px-6 text-sm font-semibold text-sage-600 text-right whitespace-nowrap">
+                        {item.price}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+
+          <!-- Note -->
+          <p class="text-xs text-stone text-center pt-2 fade-up">
+            Cijene su podložne promjenama. Za više informacija nazovite <a href="tel:+38516110777" class="text-sage-500 hover:underline">+385 1 6110 777</a>.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <CtaBanner
+      headline="Rezervirajte svoj tretman"
+      subhead="Nazovite nas i dogovorite termin koji vam odgovara."
+      ctaLabel="Nazovite +385 1 6110 777"
+      mt="mt-10"
+    />
+
+  </main>
+
+  <Footer />
+  <StickyCallButton />
+</Layout>

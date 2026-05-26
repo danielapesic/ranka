@@ -2,8 +2,10 @@
 // Header — transparent, pill-style active nav with scroll-spy
 const currentPath = Astro.url.pathname
 const isContactPage = currentPath.startsWith('/kontakt')
+const isCjenikPage  = currentPath.startsWith('/cjenik')
+const isStaticPage  = isContactPage || isCjenikPage
 ---
-<header id="site-header" class={`fixed top-0 left-0 z-50 flex w-full${isContactPage ? ' header-scrolled' : ''}`}>
+<header id="site-header" class={`fixed top-0 left-0 z-50 flex w-full${isStaticPage ? ' header-scrolled' : ''}`}>
   <div class="container-wide mt-2 flex w-full items-center justify-between py-4">
 
     <!-- Logo -->
@@ -49,6 +51,7 @@ const isContactPage = currentPath.startsWith('/kontakt')
         <li><a href="/" data-mobile-nav="pocetna" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Početna</a></li>
         <li><a href="/#usluge" data-mobile-nav="usluge" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Usluge</a></li>
         <li><a href="/#galerija" data-mobile-nav="galerija" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Galerija</a></li>
+        <li><a href="/cjenik" data-mobile-nav="cjenik" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Cjenik</a></li>
         <li><a href="/kontakt" data-mobile-nav="kontakt" class="text-[1.1rem] font-medium text-charcoal hover:text-sage-500 transition-colors duration-300">Kontakt</a></li>
         <a href="tel:+38516110777" class="btn-primary w-fit">Nazovite za termin</a>
       </ul>
@@ -77,6 +80,13 @@ const isContactPage = currentPath.startsWith('/kontakt')
             data-nav="galerija"
             class="nav-link text-[1rem] font-medium transition-colors duration-300"
           >Galerija</a>
+        </li>
+        <li>
+          <a
+            href="/cjenik"
+            data-nav="cjenik"
+            class="nav-link text-[1rem] font-medium transition-colors duration-300"
+          >Cjenik</a>
         </li>
         <li>
           <a
@@ -127,7 +137,7 @@ const isContactPage = currentPath.startsWith('/kontakt')
   #site-header .nav-link.nav-active:hover { color: #ffffff !important; }
 </style>
 
-<script is:inline define:vars={{ isContactPage }}>
+<script is:inline define:vars={{ isContactPage, isCjenikPage }}>
   (function () {
     var header     = document.getElementById('site-header')
     var toggle     = document.getElementById('menu-toggle')
@@ -155,8 +165,8 @@ const isContactPage = currentPath.startsWith('/kontakt')
     })
 
     // ── Header scroll state ───────────────────────────────────
-    // Contact page has no hero — keep solid header always, never toggle it
-    if (!isContactPage) {
+    // Static pages (no hero) — keep solid header always, never toggle it
+    if (!isContactPage && !isCjenikPage) {
       function updateHeader () {
         header.classList.toggle('header-scrolled', window.scrollY > 72)
       }
@@ -175,11 +185,9 @@ const isContactPage = currentPath.startsWith('/kontakt')
       })
     }
 
-    // On contact page, only "kontakt" is ever active
-    if (isContactPage) {
-      setActive('kontakt')
-      return
-    }
+    // On static pages (no hero), keep solid header and set correct active link
+    if (isContactPage) { setActive('kontakt'); return }
+    if (isCjenikPage)  { setActive('cjenik');  return }
 
     // Sections to watch, in DOM order
     var sectionIds = ['pocetna', 'usluge', 'galerija']
@@ -220,7 +228,7 @@ const isContactPage = currentPath.startsWith('/kontakt')
     navLinks.forEach(function (link) {
       link.addEventListener('click', function () {
         var id = link.dataset.nav
-        if (id === 'kontakt') return
+        if (id === 'kontakt' || id === 'cjenik') return
         setActive(id)
         clickLocked = true
         clearTimeout(clickLockTimer)
