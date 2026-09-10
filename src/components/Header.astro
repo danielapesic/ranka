@@ -135,6 +135,10 @@ const isStaticPage  = isContactPage || isCjenikPage
     color: #ffffff !important;
   }
   #site-header .nav-link.nav-active:hover { color: #ffffff !important; }
+
+  /* When the mobile menu is open the ✕ sits over the white panel —
+     force it dark so it's always visible regardless of header state. */
+  #site-header .header-text.menu-open { color: #111311; }
 </style>
 
 <script is:inline define:vars={{ isContactPage, isCjenikPage }}>
@@ -146,22 +150,35 @@ const isStaticPage  = isContactPage || isCjenikPage
     var iconClose  = document.getElementById('menu-icon-close')
 
     // ── Mobile menu ──────────────────────────────────────────
+    function setMenu (open) {
+      mobileNav.classList.toggle('translate-x-0', open)
+      mobileNav.classList.toggle('translate-x-full', !open)
+      iconOpen.classList.toggle('hidden', open)
+      iconClose.classList.toggle('hidden', !open)
+      toggle.classList.toggle('menu-open', open)
+      toggle.setAttribute('aria-expanded', String(open))
+      // Lock background scroll while the panel is open so the page
+      // behind it can't scroll or pinch-zoom.
+      document.body.style.overflow = open ? 'hidden' : ''
+    }
+
     toggle && toggle.addEventListener('click', function () {
-      var open = mobileNav.classList.contains('translate-x-0')
-      mobileNav.classList.toggle('translate-x-0', !open)
-      mobileNav.classList.toggle('translate-x-full', open)
-      iconOpen.classList.toggle('hidden', !open)
-      iconClose.classList.toggle('hidden', open)
-      toggle.setAttribute('aria-expanded', String(!open))
+      setMenu(!mobileNav.classList.contains('translate-x-0'))
     })
+
+    // Close when a nav link is tapped.
     mobileNav && mobileNav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        mobileNav.classList.remove('translate-x-0')
-        mobileNav.classList.add('translate-x-full')
-        iconOpen.classList.remove('hidden')
-        iconClose.classList.add('hidden')
-        toggle.setAttribute('aria-expanded', 'false')
-      })
+      a.addEventListener('click', function () { setMenu(false) })
+    })
+
+    // Close when the dimmed backdrop (the area outside the panel) is tapped.
+    mobileNav && mobileNav.addEventListener('click', function (e) {
+      if (e.target === mobileNav) setMenu(false)
+    })
+
+    // Close on Escape.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setMenu(false)
     })
 
     // ── Header scroll state ───────────────────────────────────
