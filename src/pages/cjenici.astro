@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { loadCjenik, listObjave, formatDatum } from '../lib/cjenik.mjs'
+
+// Every CSV committed in public/cjenici/, newest first
+const cjenik = loadCjenik()
+const objave = listObjave()
+---
+<Layout
+  title="Cjenici — Salon Ranka"
+  description="Strojno čitljivi cjenici usluga Salon Ranka (CSV), Miramarska cesta 24, Zagreb."
+>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-40 pb-24 bg-cream" aria-labelledby="cjenici-heading">
+      <div class="container-wide">
+        <div class="max-w-2xl mx-auto">
+          <span class="eyebrow">Salon Ranka</span>
+          <h1 id="cjenici-heading" class="heading-lg mb-4">Cjenici</h1>
+          <p class="text-stone leading-relaxed mb-10">
+            Objavljeni cjenici usluga u strojno čitljivom obliku (CSV, UTF-8, separator „;”).
+            Objekt: {cjenik.objekt.oblik}, {cjenik.objekt.adresa}, oznaka {cjenik.objekt.oznaka}.
+            Važeći cjenik je na vrhu popisa. Pregled cijena: <a href="/cjenik" class="text-sage-500 hover:underline">Cjenik usluga</a>.
+          </p>
+
+          <table class="w-full rounded-xl border border-pebble bg-white text-sm">
+            <caption class="sr-only">Popis objavljenih cjenika</caption>
+            <thead class="bg-sage-50 text-left text-xs uppercase tracking-widest text-sage-600">
+              <tr>
+                <th scope="col" class="px-4 py-3 font-semibold">Br. pohrane</th>
+                <th scope="col" class="px-4 py-3 font-semibold">Datum objave</th>
+                <th scope="col" class="px-4 py-3 font-semibold">Datoteka</th>
+              </tr>
+            </thead>
+            <tbody>
+              {objave.map((o) => (
+                <tr class="border-t border-pebble align-top">
+                  <td class="px-4 py-3 whitespace-nowrap text-charcoal">{String(o.broj).padStart(4, '0')}</td>
+                  <td class="px-4 py-3 whitespace-nowrap text-charcoal">
+                    <time datetime={o.objava}>{formatDatum(o.objava)} {o.objava.slice(11)}</time>
+                  </td>
+                  <td class="px-4 py-3 break-all">
+                    <a href={`/cjenici/${o.file}`} download class="text-sage-500 hover:underline">{o.file}</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

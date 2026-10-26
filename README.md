@@ -137,6 +137,25 @@ All contact info is hardcoded in the components. To update:
 
 ---
 
+## Cjenik i strojno čitljivi cjenici (NN 101/26, 110/26)
+
+Cijene se upisuju **samo** u `src/data/cjenik.json`. Iz te datoteke se generira i vidljivi cjenik (`/cjenik`, uz sidrenu cijenu) i CSV u `public/cjenici/` (popis svih objava na `/cjenici`).
+
+Po usluzi: `naziv`, `trajanje`, `cijena` (EUR), `posebni_oblik_prodaje` (true/false), `naziv_posebnog_oblika` (npr. `"Akcija"`, inače `""`), `sidrena_cijena` (cijena na dan 10. 9. 2026.).
+
+### Postupak promjene cijene
+
+1. U `src/data/cjenik.json` promijeni cijene i postavi `objava` na datum i vrijeme kad nove cijene počinju vrijediti, najkasnije u 8:00 tog dana (npr. `"2026-12-01T07:00"`).
+2. Pokreni `npm run cjenik` (ili `npm run build`). Skripta stvara **novu** datoteku s idućim brojem pohrane, npr. `salon_Miramarska-cesta-24-Zagreb_PJ1_0002_2026-12-01T07-00.csv`.
+3. Commitaj `cjenik.json` i novi CSV te ih deployaj tako da budu online **najkasnije do 8:00** na dan kad nova cijena počinje vrijediti.
+
+- Stare CSV datoteke se **nikad ne brišu**. Arhiva ostaje commitana u repou.
+- Ako se cijene ne mijenjaju, ne radi se ništa. Skripta ne stvara novu datoteku ako je sadržaj isti, a dnevno ažuriranje za usluge nije potrebno.
+- Na Vercelu build **pada** ako CSV za trenutni `cjenik.json` nije commitan. Tako se ne može dogoditi da web prikazuje cijene koje nisu objavljene u CSV-u.
+- `/cjenici/` mora ostati dostupan botovima: bez prijave, CAPTCHA-e i challengea (Vercel Attack Challenge Mode / Deployment Protection na produkciji) te bez blokade u `robots.txt`. `vercel.json` postavlja `Content-Type: text/csv; charset=utf-8`.
+
+---
+
 ## SEO
 
 - Per-page `<title>` and `<meta name="description">` set via props on `Layout.astro`

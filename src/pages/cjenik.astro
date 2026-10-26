@@ -5,56 +5,11 @@ import Footer from '../components/Footer.astro'
 import CtaBanner from '../components/CtaBanner.astro'
 import StickyCallButton from '../components/StickyCallButton.astro'
 
-const categories = [
-  {
-    id: 'masaza',
-    title: 'Masaža',
-    items: [
-      { name: 'Masaža za žene',               duration: '60 min', price: '50 €' },
-      { name: 'Masaža za muškarce',            duration: '60 min', price: '55 €' },
-      { name: 'Parcijalna masaža',             duration: '30 min', price: '35 €' },
-      { name: 'Parcijalna masaža produžena',   duration: '40 min', price: '40 €' },
-      { name: 'Medicinska masaža',             duration: null,     price: '55 €' },
-      { name: 'Medicinska masaža parcijalna',  duration: null,     price: '35 €' },
-      { name: 'Masaža antistress therapy',     duration: null,     price: '70 €' },
-      { name: 'Cupping',                       duration: null,     price: '15 €' },
-      { name: 'Cupping masaža',                duration: '20 min', price: '30 €' },
-    ],
-  },
-  {
-    id: 'kozmetika',
-    title: 'Kozmetika',
-    items: [
-      { name: 'Kozmetika lica', duration: null, price: '50 €' },
-      { name: 'Kozmetika leđa', duration: null, price: '35 €' },
-    ],
-  },
-  {
-    id: 'depilacija',
-    title: 'Depilacija voskom (hladnim)',
-    items: [
-      { name: 'Cijele noge',              duration: null, price: '20 €' },
-      { name: 'Pola nogu',                duration: null, price: '15 €' },
-      { name: 'Bikini zona',              duration: null, price: '15 €' },
-      { name: 'Noge i bikini zona',       duration: null, price: '30 €' },
-      { name: 'Pola nogu i bikini zona',  duration: null, price: '25 €' },
-      { name: 'Ruke',                     duration: null, price: '10 €' },
-      { name: 'Pazusi',                   duration: null, price: '6 €'  },
-      { name: 'Nadusnica',                duration: null, price: '5 €'  },
-      { name: 'Lice',                     duration: null, price: '10 €' },
-      { name: 'Muška prsa / trbuh / leđa', duration: null, price: '15 €' },
-    ],
-  },
-  {
-    id: 'obrve',
-    title: 'Obrve i trepavice',
-    items: [
-      { name: 'Bojenje obrva i trepavica', duration: null, price: '15 €' },
-      { name: 'Bojenje obrva i korekcija', duration: null, price: '10 €' },
-      { name: 'Korekcija obrva',           duration: null, price: '5 €'  },
-    ],
-  },
-]
+import cjenik from '../data/cjenik.json'
+import { formatCijena, formatDatum } from '../lib/cjenik.mjs'
+
+const categories = cjenik.kategorije
+const sidreniDatum = formatDatum(cjenik.sidreni_datum)
 ---
 <Layout
   title="Cjenik — Salon Ranka"
@@ -90,13 +45,13 @@ const categories = [
               <!-- Category header -->
               <div class="px-6 py-4 border-b border-pebble bg-sage-50">
                 <h2 class="text-sm font-semibold tracking-widest uppercase text-sage-600">
-                  {cat.title}
+                  {cat.naslov}
                 </h2>
               </div>
 
               <!-- Rows -->
-              <table class="w-full" aria-label={`Cijene za ${cat.title}`}>
-                <caption class="sr-only">Cjenik — {cat.title}</caption>
+              <table class="w-full" aria-label={`Cijene za ${cat.naslov}`}>
+                <caption class="sr-only">Cjenik — {cat.naslov}</caption>
                 <thead class="sr-only">
                   <tr>
                     <th scope="col">Usluga</th>
@@ -105,14 +60,26 @@ const categories = [
                   </tr>
                 </thead>
                 <tbody>
-                  {cat.items.map((item, i) => (
+                  {cat.usluge.map((item, i) => (
                     <tr class={`border-b border-pebble last:border-0 ${i % 2 === 0 ? '' : 'bg-cream/60'}`}>
-                      <td class="py-3.5 px-6 text-sm text-charcoal font-medium">{item.name}</td>
-                      <td class="py-3.5 px-4 text-sm text-stone text-center whitespace-nowrap">
-                        {item.duration ?? ''}
+                      <td class="py-3.5 px-6 text-sm text-charcoal font-medium">
+                        {item.naziv}
+                        {item.posebni_oblik_prodaje && (
+                          <span class="ml-2 inline-block rounded-full bg-sage-500 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-white align-middle">
+                            {item.naziv_posebnog_oblika}
+                          </span>
+                        )}
                       </td>
-                      <td class="py-3.5 px-6 text-sm font-semibold text-sage-600 text-right whitespace-nowrap">
-                        {item.price}
+                      <td class="py-3.5 px-4 text-sm text-stone text-center whitespace-nowrap">
+                        {item.trajanje ?? ''}
+                      </td>
+                      <td class="py-3.5 px-6 text-right">
+                        <span class="block text-sm font-semibold text-sage-600 whitespace-nowrap">
+                          {formatCijena(item.cijena)} €
+                        </span>
+                        <span class="block text-[0.7rem] leading-snug text-stone">
+                          (sidrena cijena na dan {sidreniDatum}: {formatCijena(item.sidrena_cijena)} €)
+                        </span>
                       </td>
                     </tr>
                   ))}
@@ -124,6 +91,9 @@ const categories = [
           <!-- Note -->
           <p class="text-xs text-stone text-center pt-2 fade-up">
             Cijene su podložne promjenama. Za više informacija nazovite <a href="tel:+38516110777" class="text-sage-500 hover:underline">+385 1 6110 777</a>.
+          </p>
+          <p class="text-xs text-stone text-center fade-up">
+            Sidrena cijena je cijena usluge na dan {sidreniDatum} Strojno čitljivi cjenici dostupni su na stranici <a href="/cjenici" class="text-sage-500 hover:underline">Cjenici</a>.
           </p>
 
         </div>
